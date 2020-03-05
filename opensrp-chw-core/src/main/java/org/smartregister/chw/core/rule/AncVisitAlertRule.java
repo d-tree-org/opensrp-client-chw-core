@@ -29,6 +29,7 @@ public class AncVisitAlertRule implements ICommonRule, RegisterAlert {
     private LocalDate visitNotDoneDate;
     private Context context;
     private Date anchor;
+    private LocalDate lmpDate;
 
 
     public AncVisitAlertRule(Context context, String lmpDate, String visitDate, String visitNotDoneDate, LocalDate dateCreated) {
@@ -36,6 +37,7 @@ public class AncVisitAlertRule implements ICommonRule, RegisterAlert {
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd-MM-yyyy");
         LocalDate lmpDate1 = formatter.parseDateTime(lmpDate).toLocalDate();
+        this.lmpDate = lmpDate1;
 
         this.todayDate = new LocalDate();
         if (StringUtils.isNotBlank(visitDate)) {
@@ -190,7 +192,19 @@ public class AncVisitAlertRule implements ICommonRule, RegisterAlert {
     }
 
     public boolean isVisitWithinThisMonth() {
-        return (lastVisitDate != null) && isVisitThisMonth(lastVisitDate, todayDate);
+        //determine if the visit has been done within this month
+        if (lastVisitDate == null) {
+            return false;
+        }
+        int monthsDue = getMonthsDifference(this.lmpDate, todayDate);
+        int lastVisitThisMonth = getMonthsDifference(lastVisitDate, todayDate);
+        if(lastVisitThisMonth == 0) {
+            return true;
+        }
+        if(monthsDue >=6 && monthsDue <=7 ){
+            return false;
+        }
+        return monthsDue < 8;
     }
 
     public Date getNotDoneDate() {
