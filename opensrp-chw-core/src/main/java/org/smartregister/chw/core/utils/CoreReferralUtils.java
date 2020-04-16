@@ -134,7 +134,8 @@ public class CoreReferralUtils {
     public static void createReferralEvent(AllSharedPreferences allSharedPreferences, String jsonString, String referralTable, String entityId) throws Exception {
         final Event baseEvent = org.smartregister.chw.anc.util.JsonFormUtils.processJsonForm(allSharedPreferences, setEntityId(jsonString, entityId), referralTable);
         NCUtils.processEvent(baseEvent.getBaseEntityId(), new JSONObject(org.smartregister.chw.anc.util.JsonFormUtils.gson.toJson(baseEvent)));
-        createReferralTask(baseEvent.getBaseEntityId(), allSharedPreferences, assignReferralFocus(referralTable), getReferralProblems(jsonString));
+        int referalType = getReferralType(jsonString);
+        createReferralTask(baseEvent.getBaseEntityId(), allSharedPreferences, assignReferralFocus(referralTable), getReferralProblems(jsonString), referalType);
     }
 
     private static String setEntityId(String jsonString, String entityId) {
@@ -151,7 +152,7 @@ public class CoreReferralUtils {
         return referralForm;
     }
 
-    private static void createReferralTask(String baseEntityId, AllSharedPreferences allSharedPreferences, String focus, String referralProblems) {
+    private static void createReferralTask(String baseEntityId, AllSharedPreferences allSharedPreferences, String focus, String referralProblems, int referalType) {
         Task task = new Task();
         task.setIdentifier(UUID.randomUUID().toString());
         //TODO Implement plans
@@ -168,7 +169,7 @@ public class CoreReferralUtils {
         task.setGroupIdentifier(locationHelper.getOpenMrsLocationId(locationHelper.generateDefaultLocationHierarchy(CoreChwApplication.getInstance().getAllowedLocationLevels()).get(0)));
         task.setStatus(Task.TaskStatus.READY);
         task.setBusinessStatus(CoreConstants.BUSINESS_STATUS.REFERRED);
-        task.setPriority(3);
+        task.setPriority(referalType);
         task.setCode(CoreConstants.JsonAssets.REFERRAL_CODE);
         task.setDescription(referralProblems);
         task.setFocus(focus);
@@ -314,6 +315,32 @@ public class CoreReferralUtils {
             startedFromReferrals = true;
         }
         return startedFromReferrals;
+    }
+
+    public static int getReferralType(String jsonString) {
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            JSONArray a = form.getJSONObject("step1").getJSONArray("fields");
+            String buttonAction = "";
+
+            for (int i = 0; i < a.length(); i++) {
+                org.json.JSONObject jo = a.getJSONObject(i);
+                if (jo.getString("key").compareToIgnoreCase("save_n_link") == 0 || jo.getString("key").compareToIgnoreCase("save_n_refer") == 0) {
+                    if (jo.optString("value") != null && jo.optString("value").compareToIgnoreCase("true") == 0) {
+                        buttonAction = jo.getJSONObject("action").getString("behaviour");
+                    }
+                }
+            }
+
+            if(buttonAction.equalsIgnoreCase("refer")) {
+                return 1;
+            }
+            return 2;
+        }
+        catch (Exception e) {
+            Timber.e(e);
+            return 1;
+        }
     }
 
 }
