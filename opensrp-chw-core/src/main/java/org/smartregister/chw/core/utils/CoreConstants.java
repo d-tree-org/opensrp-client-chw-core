@@ -281,9 +281,9 @@ public class CoreConstants {
 
         public static String getReferralFollowupForm(int referralType) {
             if(referralType == 1) {
-                return Utils.getLocalForm("referrals/referral_followup_form", locale, assetManager);
+                return Utils.getLocalForm("referral_followup_form", locale, assetManager);
             }
-            return Utils.getLocalForm("referrals/linkage_followup_form", locale, assetManager);
+            return Utils.getLocalForm("linkage_followup_form", locale, assetManager);
         }
 
         public static class CHILD_HOME_VISIT {
