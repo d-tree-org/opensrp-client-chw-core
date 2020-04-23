@@ -279,8 +279,11 @@ public class CoreConstants {
             return Utils.getLocalForm(GENERAL_REFERRAL_FORM, locale, assetManager);
         }
 
-        public static String getReferralFollowupForm() {
-            return Utils.getLocalForm(REFERRAL_FOLLOWUP_FORM, locale, assetManager);
+        public static String getReferralFollowupForm(int referralType) {
+            if(referralType == 1) {
+                return Utils.getLocalForm("referral_followup_form", locale, assetManager);
+            }
+            return Utils.getLocalForm("linkage_followup_form", locale, assetManager);
         }
 
         public static class CHILD_HOME_VISIT {
