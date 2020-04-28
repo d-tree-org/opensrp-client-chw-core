@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.smartregister.chw.anc.AncLibrary;
 import org.smartregister.chw.anc.activity.BaseAncMemberProfileActivity;
+import org.smartregister.chw.anc.domain.MemberObject;
 import org.smartregister.chw.anc.domain.Visit;
 import org.smartregister.chw.anc.util.Constants;
 import org.smartregister.chw.anc.util.VisitUtils;
@@ -216,11 +217,15 @@ public abstract class CoreAncMemberProfileActivity extends BaseAncMemberProfileA
         } else {
             getButtonStatus();
         }
-
     }
 
 
     @Override
     public abstract void setClientTasks(Set<Task> taskList);
 
+    @Override
+    public void onMemberDetailsReloaded(MemberObject memberObject) {
+        super.onMemberDetailsReloaded(memberObject);
+        ancMemberProfilePresenter().fetchTasks();
+    }
 }
