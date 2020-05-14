@@ -96,14 +96,6 @@ public abstract class CoreFamilyOtherMemberProfileActivity extends BaseFamilyOth
 
         findViewById(R.id.viewpager).setVisibility(View.GONE);
 
-        // add floating menu
-        familyFloatingMenu = getFamilyMemberFloatingMenu();
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        familyFloatingMenu.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-        addContentView(familyFloatingMenu, linearLayoutParams);
-
-        familyFloatingMenu.setClickListener(onClickFloatingMenu);
         textViewFamilyHas = findViewById(R.id.textview_family_has);
         layoutFamilyHasRow = findViewById(R.id.family_has_row);
 
