@@ -155,20 +155,14 @@ public class CoreReferralUtils {
     private static void createReferralTask(String baseEntityId, AllSharedPreferences allSharedPreferences, String focus, String referralProblems, int referalType) {
         Task task = new Task();
         task.setIdentifier(UUID.randomUUID().toString());
-        //TODO Implement plans
-      /*  Iterator<String> iterator = ChwApplication.getInstance().getPlanDefinitionRepository()
-                .findAllPlanDefinitionIds().iterator();
-        if (iterator.hasNext()) {
-            task.setPlanIdentifier(iterator.next());
-        } else {
 
-            Timber.e("No plans exist in the server");
-        }*/
+        String businessStatus = referalType == 1 ? CoreConstants.BUSINESS_STATUS.REFERRED : CoreConstants.BUSINESS_STATUS.LINKED;
+
         task.setPlanIdentifier(CoreConstants.REFERRAL_PLAN_ID);
         LocationHelper locationHelper = LocationHelper.getInstance();
         task.setGroupIdentifier(locationHelper.getOpenMrsLocationId(locationHelper.generateDefaultLocationHierarchy(CoreChwApplication.getInstance().getAllowedLocationLevels()).get(0)));
         task.setStatus(Task.TaskStatus.READY);
-        task.setBusinessStatus(CoreConstants.BUSINESS_STATUS.REFERRED);
+        task.setBusinessStatus(businessStatus);
         task.setPriority(referalType);
         task.setCode(CoreConstants.JsonAssets.REFERRAL_CODE);
         task.setDescription(referralProblems);

@@ -771,6 +771,7 @@ public class CoreConstants {
 
     public static final class BUSINESS_STATUS {
         public static final String REFERRED = "Referred";
+        public static final String LINKED = "Linked";
         public static final String IN_PROGRESS = "In-Progress";
         public static final String COMPLETE = "Complete";
         public static final String EXPIRED = "Expired";
