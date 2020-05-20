@@ -159,8 +159,7 @@ public class CoreReferralUtils {
         String businessStatus = referalType == 1 ? CoreConstants.BUSINESS_STATUS.REFERRED : CoreConstants.BUSINESS_STATUS.LINKED;
 
         task.setPlanIdentifier(CoreConstants.REFERRAL_PLAN_ID);
-        LocationHelper locationHelper = LocationHelper.getInstance();
-        task.setGroupIdentifier(locationHelper.getOpenMrsLocationId(locationHelper.generateDefaultLocationHierarchy(CoreChwApplication.getInstance().getAllowedLocationLevels()).get(0)));
+        task.setGroupIdentifier(allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM()));
         task.setStatus(Task.TaskStatus.READY);
         task.setBusinessStatus(businessStatus);
         task.setPriority(referalType);
@@ -215,7 +214,7 @@ public class CoreReferralUtils {
                         if (field.has(JsonFormConstants.OPTIONS_FIELD_NAME)) {
                             JSONArray options = field.getJSONArray(JsonFormConstants.OPTIONS_FIELD_NAME);
                             String values = getCheckBoxSelectedOptions(options);
-                            if (StringUtils.isNotEmpty(values)) {
+                            if (StringUtils.isNotEmpty(values) && !values.equalsIgnoreCase("Yes")) {
                                 formValues.add(values);
                             }
                         }
