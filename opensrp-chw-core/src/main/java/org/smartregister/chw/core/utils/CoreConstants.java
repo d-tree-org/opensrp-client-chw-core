@@ -771,13 +771,14 @@ public class CoreConstants {
 
     public static final class BUSINESS_STATUS {
         public static final String REFERRED = "Referred";
+        public static final String LINKED = "Linked";
         public static final String IN_PROGRESS = "In-Progress";
         public static final String COMPLETE = "Complete";
         public static final String EXPIRED = "Expired";
     }
 
     public static final class TASKS_FOCUS {
-        public static final String SICK_CHILD = "Sick Child";
+        public static final String SICK_CHILD = "Child Danger Signs";
         public static final String ANC_DANGER_SIGNS = "ANC Danger Signs";
         public static final String PNC_DANGER_SIGNS = "PNC Danger Signs";
         public static final String FP_SIDE_EFFECTS = "Family planning side effects";
