@@ -214,7 +214,7 @@ public class CoreReferralUtils {
                         if (field.has(JsonFormConstants.OPTIONS_FIELD_NAME)) {
                             JSONArray options = field.getJSONArray(JsonFormConstants.OPTIONS_FIELD_NAME);
                             String values = getCheckBoxSelectedOptions(options);
-                            if (StringUtils.isNotEmpty(values) && !values.equalsIgnoreCase("Yes")) {
+                            if (StringUtils.isNotEmpty(values) && !values.equalsIgnoreCase("true") && !values.equalsIgnoreCase("None")) {
                                 formValues.add(values);
                             }
                         }
@@ -226,11 +226,6 @@ public class CoreReferralUtils {
                             if (StringUtils.isNotEmpty(values)) {
                                 formValues.add(values);
                             }
-                        }
-                    } else {
-                        String values = getOtherWidgetSelectedItems(field);
-                        if (StringUtils.isNotEmpty(values)) {
-                            formValues.add(values);
                         }
                     }
                 }
@@ -284,19 +279,6 @@ public class CoreReferralUtils {
         return selectedOptionValues;
     }
 
-    private static String getOtherWidgetSelectedItems(@NotNull JSONObject jsonObject) {
-        String value = "";
-        try {
-            if (jsonObject.has(JsonFormConstants.VALUE) && StringUtils.isNotEmpty(jsonObject.getString(JsonFormConstants.VALUE))) {
-                value = jsonObject.getString(JsonFormConstants.VALUE);
-            }
-        } catch (JSONException e) {
-            Timber.e(e, "CoreReferralUtils --> getOtherWidgetSelectedItems");
-        }
-
-        return value;
-    }
-
     public static CommonRepository getCommonRepository(String tableName) {
         return Utils.context().commonrepository(tableName);
     }
@@ -310,7 +292,7 @@ public class CoreReferralUtils {
         return startedFromReferrals;
     }
 
-    public static int getReferralType(String jsonString) {
+    private static int getReferralType(String jsonString) {
         try {
             JSONObject form = new JSONObject(jsonString);
             JSONArray a = form.getJSONObject("step1").getJSONArray("fields");
@@ -318,7 +300,7 @@ public class CoreReferralUtils {
 
             for (int i = 0; i < a.length(); i++) {
                 org.json.JSONObject jo = a.getJSONObject(i);
-                if (jo.getString("key").compareToIgnoreCase("save_n_link") == 0 || jo.getString("key").compareToIgnoreCase("save_n_refer") == 0) {
+                if (jo.getString("key").equalsIgnoreCase("save_n_link") || jo.getString("key").equalsIgnoreCase("save_n_refer")) {
                     if (jo.optString("value") != null && jo.optString("value").compareToIgnoreCase("true") == 0) {
                         buttonAction = jo.getJSONObject("action").getString("behaviour");
                     }
