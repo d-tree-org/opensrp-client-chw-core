@@ -94,7 +94,7 @@ public class NavigationInteractor implements NavigationContract.Interactor {
             case CoreConstants.TABLE_NAME.TASK:
                 String sqlTask = "select count(*) from task inner join " +
                         "ec_family_member member on member.base_entity_id = task.for COLLATE NOCASE " +
-                        "WHERE task.status =\"READY\" and member.date_removed is null ";
+                        "WHERE task.status in ('READY','IN_PROGRESS') and member.date_removed is null ";
                 return NavigationDao.getQueryCount(sqlTask);
 
             case CoreConstants.TABLE_NAME.ANC_PREGNANCY_OUTCOME:
