@@ -1,6 +1,10 @@
 package org.smartregister.chw.core.utils;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import androidx.annotation.NonNull;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.utils.FormUtils;
@@ -18,15 +22,19 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Task;
 import org.smartregister.family.util.DBConstants;
-import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
+import org.smartregister.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import timber.log.Timber;
+
+import static org.smartregister.AllConstants.SYNC_STATUS;
+
+import static org.smartregister.chw.core.utils.CoreConstants.DB_CONSTANTS.*;
 
 public class CoreReferralUtils {
 
@@ -157,13 +165,14 @@ public class CoreReferralUtils {
         task.setIdentifier(UUID.randomUUID().toString());
 
         String businessStatus = referalType == 1 ? CoreConstants.BUSINESS_STATUS.REFERRED : CoreConstants.BUSINESS_STATUS.LINKED;
+        String code = referalType == 1 ? CoreConstants.JsonAssets.REFERRAL_CODE : CoreConstants.JsonAssets.LINKAGE_CODE;
 
         task.setPlanIdentifier(CoreConstants.REFERRAL_PLAN_ID);
         task.setGroupIdentifier(allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM()));
         task.setStatus(Task.TaskStatus.READY);
         task.setBusinessStatus(businessStatus);
         task.setPriority(referalType);
-        task.setCode(CoreConstants.JsonAssets.REFERRAL_CODE);
+        task.setCode(code);
         task.setDescription(referralProblems);
         task.setFocus(focus);
         task.setForEntity(baseEntityId);
@@ -318,4 +327,27 @@ public class CoreReferralUtils {
         }
     }
 
+    public static boolean hasReferralTask(String baseEntityID, String businessStatus) {
+
+        String query = "select count(*) count from task where for = ? AND business_status = ? AND status = 'READY'";
+        try (Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{baseEntityID, businessStatus})) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        } catch (Exception e) {
+            Timber.e(e);
+            return false;
+        }
+    }
+
+    public static void archiveTasksForEntity(@NonNull String entityId, String businessStatus) {
+        if (StringUtils.isBlank(entityId))
+            return;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, Task.TaskStatus.ARCHIVED.name());
+        contentValues.put(SYNC_STATUS, BaseRepository.TYPE_Unsynced);
+        contentValues.put("last_modified", DateUtil.getMillis(new DateTime()));
+
+        CoreChwApplication.getInstance().getRepository().getWritableDatabase().update("task", contentValues,
+                String.format("%s = ? AND %s =? AND %s =?", CoreConstants.DB_CONSTANTS.FOR, STATUS, BUSINESS_STATUS), new String[]{entityId, Task.TaskStatus.READY.name(), businessStatus});
+    }
 }
