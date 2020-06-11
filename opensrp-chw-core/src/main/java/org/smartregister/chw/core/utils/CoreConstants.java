@@ -32,6 +32,7 @@ public class CoreConstants {
         String START = "start";
         String ENTRY_POINT = "entry_point";
         String STATUS = "status";
+        String BUSINESS_STATUS = "business_status";
     }
 
     public interface SERVICE_GROUPS {
@@ -629,6 +630,7 @@ public class CoreConstants {
         public static final String GESTATION_AGE = "gestation_age";
         public static final String IS_PROBLEM = "is_problem";
         public static final String REFERRAL_CODE = "Referral";
+        public static final String LINKAGE_CODE = "Linkage";
 
 
         public static class FAMILY_MEMBER {
