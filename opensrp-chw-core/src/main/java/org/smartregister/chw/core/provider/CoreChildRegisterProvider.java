@@ -14,6 +14,7 @@ import org.smartregister.chw.core.R;
 import org.smartregister.chw.core.holders.FooterViewHolder;
 import org.smartregister.chw.core.holders.RegisterViewHolder;
 import org.smartregister.chw.core.utils.ChildDBConstants;
+import org.smartregister.chw.core.utils.CoreReferralUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
 import org.smartregister.family.fragment.BaseFamilyRegisterFragment;
@@ -142,6 +143,10 @@ public class CoreChildRegisterProvider implements RecyclerViewProvider<RegisterV
 
         addButtonClickListeners(client, viewHolder);
 
+        // indicate if child has referral
+         if(CoreReferralUtils.hasAnyReferralTask(pc.getCaseId())) {
+            viewHolder.textViewHasReferral.setVisibility(View.VISIBLE);
+         }
     }
 
     protected void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {

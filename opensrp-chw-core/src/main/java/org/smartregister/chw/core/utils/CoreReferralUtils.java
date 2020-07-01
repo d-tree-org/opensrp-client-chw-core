@@ -339,6 +339,18 @@ public class CoreReferralUtils {
         }
     }
 
+    public static boolean hasAnyReferralTask(String baseEntityID) {
+
+        String query = "select count(*) count from task where for = ? AND status = 'READY'";
+        try (Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{baseEntityID})) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        } catch (Exception e) {
+            Timber.e(e);
+            return false;
+        }
+    }
+
     public static void archiveTasksForEntity(@NonNull String entityId, String businessStatus) {
         if (StringUtils.isBlank(entityId))
             return;

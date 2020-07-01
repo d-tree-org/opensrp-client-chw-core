@@ -19,6 +19,7 @@ import org.smartregister.chw.core.application.CoreChwApplication;
 import org.smartregister.chw.core.interactor.CoreChildProfileInteractor;
 import org.smartregister.chw.core.utils.ChwDBConstants;
 import org.smartregister.chw.core.utils.CoreConstants;
+import org.smartregister.chw.core.utils.CoreReferralUtils;
 import org.smartregister.chw.core.utils.HomeVisitUtil;
 import org.smartregister.chw.core.utils.Utils;
 import org.smartregister.chw.core.utils.VisitSummary;
@@ -44,6 +45,11 @@ public class ChwAncRegisterProvider extends AncRegisterProvider {
     @Override
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         super.getView(cursor, client, viewHolder);
+
+        // indicate if anc has referral
+        if(CoreReferralUtils.hasAnyReferralTask(((CommonPersonObjectClient) client).getCaseId())) {
+            viewHolder.textViewHasReferral.setVisibility(View.VISIBLE);
+        }
 
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         Utils.startAsyncTask(new UpdateAsyncTask(context, viewHolder, pc), null);
