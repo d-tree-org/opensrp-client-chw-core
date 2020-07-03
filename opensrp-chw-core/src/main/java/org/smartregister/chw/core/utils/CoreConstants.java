@@ -536,6 +536,7 @@ public class CoreConstants {
         public static final String FP_REFERRAL = "ec_fp_referral";
         public static final String CLOSE_REFERRAL = "ec_close_referral";
         public static final String SCHEDULE_SERVICE = "schedule_service";
+        public static final String ADOLESCENT = "ec_adolescent";
     }
 
     public static final class INTENT_KEY {
@@ -578,6 +579,7 @@ public class CoreConstants {
         public static final String FAMILY_PLANNING = "Family Planning";
         public static final String MALARIA = "Malaria";
         public static final String REFERRALS = "Referrals";
+        public static final String ADOLESCENT = "ADOLESCENT";
     }
 
     public static final class RULE_FILE {
@@ -769,6 +771,7 @@ public class CoreConstants {
         public static final String MALARIA_REGISTER_ACTIVITY = "MALARIA_REGISTER_ACTIVITY";
         public static final String FP_REGISTER_ACTIVITY = "FP_REGISTER_ACTIVITY";
         public static final String ALL_CLIENTS_REGISTERED_ACTIVITY = "ALL_CLIENTS";
+        public static final String ADOLESCENT_REGISTER_ACTIVITY = "ADOLESCENT_REGISTER_ACTIVITY";
     }
 
     public static final class BUSINESS_STATUS {
