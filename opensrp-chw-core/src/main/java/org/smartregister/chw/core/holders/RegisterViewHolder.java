@@ -15,6 +15,7 @@ public class RegisterViewHolder extends RecyclerView.ViewHolder {
     public TextView textViewChildName;
     public TextView textViewReferralDay;
     public TextView textViewAddressGender;
+    public TextView textViewHasReferral;
     public Button dueButton;
     public View dueButtonLayout;
     public View childColumn;
@@ -27,6 +28,7 @@ public class RegisterViewHolder extends RecyclerView.ViewHolder {
         textViewParentName = itemView.findViewById(R.id.textview_parent_name);
         textViewChildName = itemView.findViewById(R.id.text_view_child_name);
         textViewAddressGender = itemView.findViewById(R.id.text_view_address_gender);
+        textViewHasReferral = itemView.findViewById(R.id.has_referral);
         textViewReferralDay = itemView.findViewById(R.id.text_view_referral_day);
         dueButton = itemView.findViewById(R.id.due_button);
         dueButtonLayout = itemView.findViewById(R.id.due_button_wrapper);

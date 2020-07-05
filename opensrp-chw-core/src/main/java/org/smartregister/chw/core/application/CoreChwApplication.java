@@ -33,6 +33,7 @@ import org.smartregister.repository.TaskRepository;
 import org.smartregister.repository.UniqueIdRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.helper.ECSyncHelper;
+import org.smartregister.util.LangUtils;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.activity.LoginActivity;
 
@@ -233,7 +234,7 @@ public abstract class CoreChwApplication extends DrishtiApplication implements C
 
     @Override
     public void notifyAppContextChange() {
-        Locale current = getApplicationContext().getResources().getConfiguration().locale;
+        Locale current = new Locale(LangUtils.getLanguage(getApplicationContext()));
         saveLanguage(current.getLanguage());
         CoreConstants.JSON_FORM.setLocaleAndAssetManager(current, getAssets());
         FamilyLibrary.getInstance().setMetadata(getMetadata());
