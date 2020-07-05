@@ -327,10 +327,18 @@ public abstract class CoreFamilyProfileActivity extends BaseFamilyProfileActivit
     }
 
     public void goToOtherMemberProfileActivity(CommonPersonObjectClient patient, Bundle bundle) {
-        Intent intent = new Intent(this, getFamilyOtherMemberProfileActivityClass());
+        String ageString = Utils.getDuration(Utils.getValue(patient.getColumnmaps(), DBConstants.KEY.DOB, false));
+        Integer age = CoreChildUtils.dobStringToYear(ageString);
+        Intent intent;
+        if (age >= 13 && age <= 19) {
+            intent = new Intent(this, getAdolescentProfileActivityClass());
+        } else {
+            intent = new Intent(this, getFamilyOtherMemberProfileActivityClass());
+        }
         if (bundle != null) {
             intent.putExtras(bundle);
         }
+        intent.putExtra(CoreConstants.INTENT_KEY.IS_COMES_FROM_FAMILY, true);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
         intent.putExtra(CoreConstants.INTENT_KEY.CHILD_COMMON_PERSON, patient);
         intent.putExtra(Constants.INTENT_KEY.FAMILY_HEAD, getFamilyHead());
@@ -386,6 +394,8 @@ public abstract class CoreFamilyProfileActivity extends BaseFamilyProfileActivit
     protected abstract Class<? extends BaseAncMemberProfileActivity> getAncMemberProfileActivityClass();
 
     protected abstract Class<? extends BasePncMemberProfileActivity> getPncMemberProfileActivityClass();
+
+    protected abstract Class<?> getAdolescentProfileActivityClass();
 
     protected abstract boolean isAncMember(String baseEntityId);
 
