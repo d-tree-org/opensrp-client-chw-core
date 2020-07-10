@@ -26,6 +26,7 @@ import org.smartregister.chw.core.utils.VisitSummary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.view.contract.SmartRegisterClient;
+import org.smartregister.chw.core.holders.RegisterViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
