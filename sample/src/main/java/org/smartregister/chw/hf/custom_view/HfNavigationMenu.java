@@ -14,4 +14,9 @@ public class HfNavigationMenu implements NavigationMenu.Flavour {
     public HashMap<String, String> getTableMapValues() {
         return null;
     }
+
+    @Override
+    public void executeSync() {
+
+    }
 }
