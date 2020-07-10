@@ -98,7 +98,7 @@ def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
 
 def getVersionName = { ->
-    return "1.1.39-DTREE-8-SNAPSHOT" // Library version
+    return "1.1.39-DTREE-10-SNAPSHOT" // Library version
 }
 
 def getArtificatId = { ->
@@ -177,6 +177,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'io.ona.rdt-capture', module: 'lib'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api('org.smartregister:opensrp-client-core:1.8.20-SNAPSHOT@aar') {
@@ -201,6 +202,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api('org.smartregister:opensrp-client-immunization:1.4.37-SNAPSHOT@aar') {
@@ -208,6 +210,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api('org.smartregister:opensrp-client-reporting:0.0.17-SNAPSHOT@aar') {
@@ -216,18 +219,20 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
-    api('org.smartregister:opensrp-client-chw-anc:0.1.52-SNAPSHOT@aar') {
+    api('org.smartregister:opensrp-client-chw-anc:0.1.53-DTREE-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'org.smartregister', module: 'opensrp-client-immunization'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
-    api('org.smartregister:opensrp-client-chw-pnc:0.0.31-SNAPSHOT@aar') {
+    api('org.smartregister:opensrp-client-chw-pnc:0.0.31-DTREE-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-chw-anc'
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
@@ -235,6 +240,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'org.smartregister', module: 'opensrp-client-immunization'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api('org.smartregister:opensrp-client-chw-malaria:1.2.11-SNAPSHOT@aar') {
@@ -243,6 +249,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api('org.smartregister:opensrp-chw-family-planning:1.0.18-SNAPSHOT@aar') {
@@ -251,6 +258,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
     api('org.smartregister:opensrp-client-chw-referral:1.1.2-SNAPSHOT@aar') {
         transitive = true
@@ -258,6 +266,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'org.smartregister', module: 'opensrp-client-configurable-views'
         exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
     api 'com.google.guava:guava:20.0'
