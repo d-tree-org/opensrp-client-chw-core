@@ -74,12 +74,13 @@ public class BAJsonFormUtils {
 
                 //inject opensrp id into the form
                 JSONObject stepOne = form.getJSONObject(org.smartregister.family.util.JsonFormUtils.STEP1);
+                JSONObject stepTwo = form.getJSONObject(org.smartregister.family.util.JsonFormUtils.STEP2);
 
                 if (StringUtils.isNotBlank(title)) {
                     stepOne.put(TITLE, title);
                 }
 
-                JSONArray jsonArray = stepOne.getJSONArray(org.smartregister.family.util.JsonFormUtils.FIELDS);
+                JSONArray jsonArray = stepTwo.getJSONArray(org.smartregister.family.util.JsonFormUtils.FIELDS);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
