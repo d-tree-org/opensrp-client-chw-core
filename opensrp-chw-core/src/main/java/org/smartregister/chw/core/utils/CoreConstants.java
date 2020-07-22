@@ -33,6 +33,8 @@ public class CoreConstants {
         String ENTRY_POINT = "entry_point";
         String STATUS = "status";
         String BUSINESS_STATUS = "business_status";
+        String PRIORITY = "priority";
+        String AUTHORED_ON = "authored_on";
     }
 
     public interface SERVICE_GROUPS {

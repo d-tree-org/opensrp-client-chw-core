@@ -341,7 +341,7 @@ public class CoreReferralUtils {
 
     public static boolean hasAnyReferralTask(String baseEntityID) {
 
-        String query = "select count(*) count from task where for = ? AND status = 'READY'";
+        String query = "select count(*) count from task where for = ? AND status in ('READY', 'IN_PROGRESS')";
         try (Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{baseEntityID})) {
             cursor.moveToFirst();
             return cursor.getInt(0) > 0;
@@ -349,6 +349,18 @@ public class CoreReferralUtils {
             Timber.e(e);
             return false;
         }
+    }
+
+    public static Task getRecentTask(String baseEntityID) {
+        try (net.sqlcipher.Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery("SELECT * FROM TASK" +
+                " WHERE " + FOR + " =? AND status in ('READY', 'IN_PROGRESS') order by authored_on desc", new String[]{baseEntityID})) {
+            if (cursor.moveToFirst()) {
+                return  CoreChwApplication.getInstance().getTaskRepository().readCursor(cursor);
+            }
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return null;
     }
 
     public static void archiveTasksForEntity(@NonNull String entityId, String businessStatus) {
