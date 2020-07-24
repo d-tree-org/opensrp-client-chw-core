@@ -52,6 +52,7 @@ public class CoreConstants {
         String MALARIA_VISIT = "MALARIA_VISIT";
         String FP_VISIT = "FP_VISIT";
         String ROUTINE_HOUSEHOLD_VISIT = "ROUTINE_HOUSEHOLD_VISIT";
+        String REFERRAL_FOLLOWUP_VISIT = "REFERRAL_FOLLOWUP_VISIT";
     }
 
     public interface SCHEDULE_GROUPS {
