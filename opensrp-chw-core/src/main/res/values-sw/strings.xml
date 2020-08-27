@@ -417,4 +417,8 @@
     <string name="date_months">Miezi</string>
 
     <string name="last_visit_x_days_ago">Tembeleo la mwisho siku %1$s iliyopita</string>
+
+    <string name="referral_visit_due">Tembeleo la rufaa limefika</string>
+    <string name="record_followup">Rekodi ufuatiliaji</string>
+
 </resources>
