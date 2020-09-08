@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="0dp"
             android:paddingTop="@dimen/register_list_top_bottom_padding"
-            android:text="Has Referral"
+            android:text="@string/has_referral"
             android:visibility="gone"
             android:textColor="@color/alert_urgent_red"
             android:textSize="@dimen/register_list_desc_size"

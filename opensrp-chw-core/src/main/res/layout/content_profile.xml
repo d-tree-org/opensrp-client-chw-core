@@ -104,7 +104,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/danger_image"
                     android:gravity="center_horizontal"
-                    android:text="Referral Visit Due"
+                    android:text="@string/referral_visit_due"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@android:color/holo_red_dark" />
 
@@ -116,7 +116,7 @@
                     android:layout_below="@+id/textview_referral_visit"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/danger_image"
-                    android:text="Record follow up"
+                    android:text="@string/record_followup"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="@color/light_grey_text" />
 

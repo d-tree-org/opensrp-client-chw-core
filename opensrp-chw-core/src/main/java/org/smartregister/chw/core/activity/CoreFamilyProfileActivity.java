@@ -1,6 +1,7 @@
 package org.smartregister.chw.core.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,11 +24,13 @@ import org.json.JSONObject;
 import org.smartregister.chw.anc.activity.BaseAncMemberProfileActivity;
 import org.smartregister.chw.anc.domain.MemberObject;
 import org.smartregister.chw.core.R;
+import org.smartregister.chw.core.application.CoreChwApplication;
 import org.smartregister.chw.core.contract.FamilyProfileExtendedContract;
 import org.smartregister.chw.core.custom_views.FamilyFloatingMenu;
 import org.smartregister.chw.core.event.PermissionEvent;
 import org.smartregister.chw.core.listener.FloatingMenuListener;
 import org.smartregister.chw.core.presenter.CoreFamilyProfilePresenter;
+import org.smartregister.chw.core.sync.CoreClientProcessor;
 import org.smartregister.chw.core.utils.ChildDBConstants;
 import org.smartregister.chw.core.utils.CoreChildUtils;
 import org.smartregister.chw.core.utils.CoreConstants;
@@ -43,6 +46,7 @@ import org.smartregister.family.util.JsonFormUtils;
 import org.smartregister.family.util.Utils;
 import org.smartregister.util.PermissionUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -351,7 +355,15 @@ public abstract class CoreFamilyProfileActivity extends BaseFamilyProfileActivit
         Integer yearOfBirth = CoreChildUtils.dobStringToYear(dobString);
         Intent intent;
         if (yearOfBirth != null && yearOfBirth >= 5) {
-            intent = new Intent(this, getAboveFiveChildProfileActivityClass());
+            // close child record
+            CoreClientProcessor.processRemoveChild(patient.getCaseId(), new Date());
+            //set child to other member
+            ContentValues values = new ContentValues();
+            values.put("entity_type", "ec_family_member");
+            CoreChwApplication.getInstance().getRepository().getWritableDatabase().update(CoreConstants.TABLE_NAME.FAMILY_MEMBER, values,
+                    org.smartregister.chw.anc.util.DBConstants.KEY.BASE_ENTITY_ID + " = ?  ", new String[]{patient.getCaseId()});
+            goToOtherMemberProfileActivity(patient, bundle);
+            return;
         } else {
             intent = new Intent(this, getChildProfileActivityClass());
         }

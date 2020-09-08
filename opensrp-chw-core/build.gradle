@@ -98,7 +98,7 @@ def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
 
 def getVersionName = { ->
-    return "1.1.39-DTREE-16-SNAPSHOT" // Library version
+    return "1.1.39-DTREE-17-SNAPSHOT" // Library version
 }
 
 def getArtificatId = { ->
@@ -207,7 +207,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
 
-    api('org.smartregister:opensrp-client-family:1.2.31-SNAPSHOT@aar') {
+    api('org.smartregister:opensrp-client-family:1.2.43-DTREE-3-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
@@ -233,7 +233,7 @@ dependencies {
         exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
-    api('org.smartregister:opensrp-chw-anc:0.1.53-DTREE-SNAPSHOT@aar') {
+    api('org.smartregister:opensrp-chw-anc:0.1.53-DTREE-1-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -243,7 +243,7 @@ dependencies {
         exclude group: 'com.rengwuxian.materialedittext', module: 'library'
     }
 
-    api('org.smartregister:opensrp-chw-pnc:0.0.31-DTREE-SNAPSHOT@aar') {
+    api('org.smartregister:opensrp-chw-pnc:0.0.31-DTREE-1-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-chw-anc'
         exclude group: 'org.smartregister', module: 'opensrp-client-core'

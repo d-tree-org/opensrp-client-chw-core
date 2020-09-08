@@ -458,4 +458,7 @@
     <string name="sick_child_form">Sick child form</string>
     <string name="sick_visit_on">Sick visit on %s</string>
     <string name="view_sick_visits">View sick visits</string>
+
+    <string name="referral_visit_due">Referral Visit Due</string>
+    <string name="record_followup">Record follow up</string>
 </resources>
