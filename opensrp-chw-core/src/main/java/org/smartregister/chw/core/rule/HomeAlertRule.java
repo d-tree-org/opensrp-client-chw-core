@@ -28,7 +28,7 @@ public class HomeAlertRule implements ICommonRule {
     public String visitMonthName;
     private LocalDate dateCreated;
     private LocalDate todayDate;
-    private LocalDate lastVisitDate;
+    protected LocalDate lastVisitDate;
     private LocalDate visitNotDoneDate;
     private Integer yearOfBirth;
     private Context context;
@@ -62,7 +62,7 @@ public class HomeAlertRule implements ICommonRule {
         return (visitNotDoneDate != null && getMonthsDifference(visitNotDoneDate, todayDate) < 1);
     }
 
-    private int getMonthsDifference(LocalDate date1, LocalDate date2) {
+    protected int getMonthsDifference(LocalDate date1, LocalDate date2) {
         return Months.monthsBetween(
                 date1.withDayOfMonth(1),
                 date2.withDayOfMonth(1)).getMonths();
@@ -170,7 +170,7 @@ public class HomeAlertRule implements ICommonRule {
         return getLastDayOfMonth(new Date());
     }
 
-    private LocalDate getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated != null ? dateCreated : new LocalDate();
     }
 
@@ -192,5 +192,13 @@ public class HomeAlertRule implements ICommonRule {
             }
         }
         return anchor;
+    }
+
+    public LocalDate getTodayDate() {
+        return todayDate;
+    }
+
+    public LocalDate getLastVisitDate() {
+        return lastVisitDate;
     }
 }
