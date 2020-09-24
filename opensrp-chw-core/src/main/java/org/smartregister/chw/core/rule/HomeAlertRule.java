@@ -28,7 +28,7 @@ public class HomeAlertRule implements ICommonRule {
     public String visitMonthName;
     private LocalDate dateCreated;
     private LocalDate todayDate;
-    protected LocalDate lastVisitDate;
+    private LocalDate lastVisitDate;
     private LocalDate visitNotDoneDate;
     private Integer yearOfBirth;
     private Context context;
