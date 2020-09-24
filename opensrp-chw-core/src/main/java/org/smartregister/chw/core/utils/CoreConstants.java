@@ -604,6 +604,7 @@ public class CoreConstants {
         public static final String FP_INJECTION_DUE = "fp-injection-due-rule.yml";
         public static final String FP_FEMALE_STERILIZATION = "fp-female-sterilization-rule.yml";
         public static final String FP_IUCD = "fp-iucd-rule.yml";
+        public static final String CHILD_HOME_VISIT = "child-home-visit-rules.yml";
     }
 
     public static class PROFILE_CHANGE_ACTION {
