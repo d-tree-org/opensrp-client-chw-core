@@ -589,6 +589,7 @@ public class CoreConstants {
         public static final String MALARIA = "Malaria";
         public static final String REFERRALS = "Referrals";
         public static final String ADOLESCENT = "ADOLESCENT";
+        public static final String MONTHLY_ACTIVITY = "Monthly Activity";
     }
 
     public static final class RULE_FILE {
@@ -782,6 +783,7 @@ public class CoreConstants {
         public static final String FP_REGISTER_ACTIVITY = "FP_REGISTER_ACTIVITY";
         public static final String ALL_CLIENTS_REGISTERED_ACTIVITY = "ALL_CLIENTS";
         public static final String ADOLESCENT_REGISTER_ACTIVITY = "ADOLESCENT_REGISTER_ACTIVITY";
+        public static final String MONTHLY_ACTIVITIES_ACTIVITY = "MONTHLY_ACTIVITIES_ACTIVITY";
     }
 
     public static final class BUSINESS_STATUS {
