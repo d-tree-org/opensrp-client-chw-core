@@ -15,6 +15,7 @@ import org.smartregister.chw.core.R;
 import org.smartregister.chw.core.application.CoreChwApplication;
 import org.smartregister.chw.core.rule.PncVisitAlertRule;
 import org.smartregister.chw.core.utils.CoreConstants;
+import org.smartregister.chw.core.utils.CoreReferralUtils;
 import org.smartregister.chw.core.utils.HomeVisitUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -44,6 +45,11 @@ public class ChwPncRegisterProvider extends PncRegisterProvider {
     @Override
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         super.getView(cursor, client, viewHolder);
+
+        // indicate if anc has referral
+        if(CoreReferralUtils.hasAnyReferralTask(((CommonPersonObjectClient) client).getCaseId())) {
+            viewHolder.textViewHasReferral.setVisibility(View.VISIBLE);
+        }
 
         viewHolder.dueButton.setVisibility(View.GONE);
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;

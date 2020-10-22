@@ -449,7 +449,7 @@ public class CoreClientProcessor extends ClientProcessorForJava {
         }
     }
 
-    private void processRemoveChild(String baseEntityId, Date eventDate) {
+    public static void processRemoveChild(String baseEntityId, Date eventDate) {
 
         Date myEventDate = eventDate;
         if (myEventDate == null) {

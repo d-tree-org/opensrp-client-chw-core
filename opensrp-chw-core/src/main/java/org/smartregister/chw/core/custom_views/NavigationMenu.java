@@ -281,6 +281,7 @@ public class NavigationMenu implements NavigationContract.View, SyncStatusBroadc
         View.OnClickListener syncClicker = v -> {
             Toast.makeText(parentActivity, parentActivity.getResources().getText(R.string.action_start_sync), Toast.LENGTH_SHORT).show();
             mPresenter.sync(parentActivity);
+            menuFlavor.executeSync();
         };
 
 
@@ -454,5 +455,6 @@ public class NavigationMenu implements NavigationContract.View, SyncStatusBroadc
     public interface Flavour {
         String[] getSupportedLanguages();
         HashMap<String, String> getTableMapValues();
+        void executeSync();
     }
 }

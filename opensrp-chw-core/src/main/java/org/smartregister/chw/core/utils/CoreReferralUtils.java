@@ -1,6 +1,10 @@
 package org.smartregister.chw.core.utils;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.Cursor;
+
+import androidx.annotation.NonNull;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.utils.FormUtils;
@@ -18,15 +22,19 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Task;
 import org.smartregister.family.util.DBConstants;
-import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
+import org.smartregister.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import timber.log.Timber;
+
+import static org.smartregister.AllConstants.SYNC_STATUS;
+
+import static org.smartregister.chw.core.utils.CoreConstants.DB_CONSTANTS.*;
 
 public class CoreReferralUtils {
 
@@ -134,7 +142,8 @@ public class CoreReferralUtils {
     public static void createReferralEvent(AllSharedPreferences allSharedPreferences, String jsonString, String referralTable, String entityId) throws Exception {
         final Event baseEvent = org.smartregister.chw.anc.util.JsonFormUtils.processJsonForm(allSharedPreferences, setEntityId(jsonString, entityId), referralTable);
         NCUtils.processEvent(baseEvent.getBaseEntityId(), new JSONObject(org.smartregister.chw.anc.util.JsonFormUtils.gson.toJson(baseEvent)));
-        createReferralTask(baseEvent.getBaseEntityId(), allSharedPreferences, assignReferralFocus(referralTable), getReferralProblems(jsonString));
+        int referalType = getReferralType(jsonString);
+        createReferralTask(baseEvent.getBaseEntityId(), allSharedPreferences, assignReferralFocus(referralTable), getReferralProblems(jsonString), referalType);
     }
 
     private static String setEntityId(String jsonString, String entityId) {
@@ -151,25 +160,19 @@ public class CoreReferralUtils {
         return referralForm;
     }
 
-    private static void createReferralTask(String baseEntityId, AllSharedPreferences allSharedPreferences, String focus, String referralProblems) {
+    private static void createReferralTask(String baseEntityId, AllSharedPreferences allSharedPreferences, String focus, String referralProblems, int referalType) {
         Task task = new Task();
         task.setIdentifier(UUID.randomUUID().toString());
-        //TODO Implement plans
-      /*  Iterator<String> iterator = ChwApplication.getInstance().getPlanDefinitionRepository()
-                .findAllPlanDefinitionIds().iterator();
-        if (iterator.hasNext()) {
-            task.setPlanIdentifier(iterator.next());
-        } else {
 
-            Timber.e("No plans exist in the server");
-        }*/
+        String businessStatus = referalType == 1 ? CoreConstants.BUSINESS_STATUS.REFERRED : CoreConstants.BUSINESS_STATUS.LINKED;
+        String code = referalType == 1 ? CoreConstants.JsonAssets.REFERRAL_CODE : CoreConstants.JsonAssets.LINKAGE_CODE;
+
         task.setPlanIdentifier(CoreConstants.REFERRAL_PLAN_ID);
-        LocationHelper locationHelper = LocationHelper.getInstance();
-        task.setGroupIdentifier(locationHelper.getOpenMrsLocationId(locationHelper.generateDefaultLocationHierarchy(CoreChwApplication.getInstance().getAllowedLocationLevels()).get(0)));
+        task.setGroupIdentifier(allSharedPreferences.fetchUserLocalityId(allSharedPreferences.fetchRegisteredANM()));
         task.setStatus(Task.TaskStatus.READY);
-        task.setBusinessStatus(CoreConstants.BUSINESS_STATUS.REFERRED);
-        task.setPriority(3);
-        task.setCode(CoreConstants.JsonAssets.REFERRAL_CODE);
+        task.setBusinessStatus(businessStatus);
+        task.setPriority(referalType);
+        task.setCode(code);
         task.setDescription(referralProblems);
         task.setFocus(focus);
         task.setForEntity(baseEntityId);
@@ -199,6 +202,9 @@ public class CoreReferralUtils {
             case CoreConstants.TABLE_NAME.FP_REFERRAL:
                 focus = CoreConstants.TASKS_FOCUS.FP_SIDE_EFFECTS;
                 break;
+            case CoreConstants.TABLE_NAME.ADOLESCENT:
+                focus = CoreConstants.TASKS_FOCUS.ADOLESCENT_DANGER_SIGNS;
+                break;
             default:
                 focus = "";
                 break;
@@ -220,7 +226,7 @@ public class CoreReferralUtils {
                         if (field.has(JsonFormConstants.OPTIONS_FIELD_NAME)) {
                             JSONArray options = field.getJSONArray(JsonFormConstants.OPTIONS_FIELD_NAME);
                             String values = getCheckBoxSelectedOptions(options);
-                            if (StringUtils.isNotEmpty(values)) {
+                            if (StringUtils.isNotEmpty(values) && !values.equalsIgnoreCase("true") && !values.equalsIgnoreCase("None")) {
                                 formValues.add(values);
                             }
                         }
@@ -232,11 +238,6 @@ public class CoreReferralUtils {
                             if (StringUtils.isNotEmpty(values)) {
                                 formValues.add(values);
                             }
-                        }
-                    } else {
-                        String values = getOtherWidgetSelectedItems(field);
-                        if (StringUtils.isNotEmpty(values)) {
-                            formValues.add(values);
                         }
                     }
                 }
@@ -290,19 +291,6 @@ public class CoreReferralUtils {
         return selectedOptionValues;
     }
 
-    private static String getOtherWidgetSelectedItems(@NotNull JSONObject jsonObject) {
-        String value = "";
-        try {
-            if (jsonObject.has(JsonFormConstants.VALUE) && StringUtils.isNotEmpty(jsonObject.getString(JsonFormConstants.VALUE))) {
-                value = jsonObject.getString(JsonFormConstants.VALUE);
-            }
-        } catch (JSONException e) {
-            Timber.e(e, "CoreReferralUtils --> getOtherWidgetSelectedItems");
-        }
-
-        return value;
-    }
-
     public static CommonRepository getCommonRepository(String tableName) {
         return Utils.context().commonrepository(tableName);
     }
@@ -316,4 +304,77 @@ public class CoreReferralUtils {
         return startedFromReferrals;
     }
 
+    private static int getReferralType(String jsonString) {
+        try {
+            JSONObject form = new JSONObject(jsonString);
+            JSONArray a = form.getJSONObject("step1").getJSONArray("fields");
+            String buttonAction = "";
+
+            for (int i = 0; i < a.length(); i++) {
+                org.json.JSONObject jo = a.getJSONObject(i);
+                if (jo.getString("key").equalsIgnoreCase("save_n_link") || jo.getString("key").equalsIgnoreCase("save_n_refer")) {
+                    if (jo.optString("value") != null && jo.optString("value").compareToIgnoreCase("true") == 0) {
+                        buttonAction = jo.getJSONObject("action").getString("behaviour");
+                    }
+                }
+            }
+
+            if(buttonAction.equalsIgnoreCase("refer")) {
+                return 1;
+            }
+            return 2;
+        }
+        catch (Exception e) {
+            Timber.e(e);
+            return 1;
+        }
+    }
+
+    public static boolean hasReferralTask(String baseEntityID, String businessStatus) {
+
+        String query = "select count(*) count from task where for = ? AND business_status = ? AND status = 'READY'";
+        try (Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{baseEntityID, businessStatus})) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        } catch (Exception e) {
+            Timber.e(e);
+            return false;
+        }
+    }
+
+    public static boolean hasAnyReferralTask(String baseEntityID) {
+
+        String query = "select count(*) count from task where for = ? AND status in ('READY', 'IN_PROGRESS')";
+        try (Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{baseEntityID})) {
+            cursor.moveToFirst();
+            return cursor.getInt(0) > 0;
+        } catch (Exception e) {
+            Timber.e(e);
+            return false;
+        }
+    }
+
+    public static Task getRecentTask(String baseEntityID) {
+        try (net.sqlcipher.Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery("SELECT * FROM TASK" +
+                " WHERE " + FOR + " =? AND status in ('READY', 'IN_PROGRESS') order by authored_on desc", new String[]{baseEntityID})) {
+            if (cursor.moveToFirst()) {
+                return  CoreChwApplication.getInstance().getTaskRepository().readCursor(cursor);
+            }
+        } catch (Exception e) {
+            Timber.e(e);
+        }
+        return null;
+    }
+
+    public static void archiveTasksForEntity(@NonNull String entityId, String businessStatus) {
+        if (StringUtils.isBlank(entityId))
+            return;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, Task.TaskStatus.ARCHIVED.name());
+        contentValues.put(SYNC_STATUS, BaseRepository.TYPE_Unsynced);
+        contentValues.put("last_modified", DateUtil.getMillis(new DateTime()));
+
+        CoreChwApplication.getInstance().getRepository().getWritableDatabase().update("task", contentValues,
+                String.format("%s = ? AND %s =? AND %s =?", CoreConstants.DB_CONSTANTS.FOR, STATUS, BUSINESS_STATUS), new String[]{entityId, Task.TaskStatus.READY.name(), businessStatus});
+    }
 }

@@ -88,6 +88,7 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
         }
     };
     public RelativeLayout layoutFamilyHasRow;
+    public RelativeLayout layoutReferralRow;
     protected TextView textViewParentName;
     protected TextView textViewLastVisit;
     protected TextView textViewMedicalHistory;
@@ -114,12 +115,14 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
     private View viewLastVisitRow;
     private View viewMostDueRow;
     private View viewFamilyRow;
+    private View viewReferralRow;
     private View viewDividerSickRow;
     private View textViewSickChildArrow;
     private TextView textViewNotVisitMonth;
     private TextView textViewUndo;
     private TextView textViewNameDue;
     private TextView textViewFamilyHas;
+    private TextView textViewReferralHas;
     private TextView textViewSickChild;
     private ImageView imageViewCross;
     private ProgressBar progressBar;
@@ -224,11 +227,14 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
         layoutMostDueOverdue = findViewById(R.id.most_due_overdue_row);
         textViewNameDue = findViewById(R.id.textview_name_due);
         layoutFamilyHasRow = findViewById(R.id.family_has_row);
+        layoutReferralRow = findViewById(R.id.referral_row);
         textViewFamilyHas = findViewById(R.id.textview_family_has);
+        textViewReferralHas = findViewById(R.id.textview_referral_visit);
         layoutRecordButtonDone = findViewById(R.id.record_visit_done_bar);
         viewLastVisitRow = findViewById(R.id.view_last_visit_row);
         viewMostDueRow = findViewById(R.id.view_most_due_overdue_row);
         viewFamilyRow = findViewById(R.id.view_family_row);
+        viewReferralRow = findViewById(R.id.view_referral_row);
         progressBar = findViewById(R.id.progress_bar);
         textViewRecord.setOnClickListener(this);
         textViewVisitNot.setOnClickListener(this);
@@ -238,6 +244,7 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
         layoutLastVisitRow.setOnClickListener(this);
         layoutMostDueOverdue.setOnClickListener(this);
         layoutFamilyHasRow.setOnClickListener(this);
+        layoutReferralRow.setOnClickListener(this);
         layoutRecordButtonDone.setOnClickListener(this);
 
         viewDividerSickRow = findViewById(R.id.view_sick_visit_row);
@@ -296,6 +303,7 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
             presenter().fetchVisitStatus(childBaseEntityId);
             presenter().fetchUpcomingServiceAndFamilyDue(childBaseEntityId);
             presenter().updateChildCommonPerson(childBaseEntityId);
+            presenter().fetchTasks();
         }, 100);
     }
 
@@ -530,7 +538,13 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
 
     @Override
     public void setClientTasks(Set<Task> taskList) {
-        //// TODO: 06/08/19
+        handler.postDelayed(() -> {
+            if (taskList.size() > 0) {
+                layoutReferralRow.setVisibility(View.VISIBLE);
+                viewReferralRow.setVisibility(View.VISIBLE);
+                layoutReferralRow.setTag(taskList.iterator().next());
+            }
+        }, 100);
     }
 
     @Override

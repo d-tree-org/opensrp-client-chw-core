@@ -61,6 +61,19 @@
             android:textSize="@dimen/child_register_list_desc_size"
             android:textStyle="bold" />
 
+        <org.smartregister.view.customcontrols.CustomFontTextView
+            android:id="@+id/has_referral"
+            style="@style/CustomFontTextViewStyle.ClientList.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="0dp"
+            android:paddingTop="@dimen/register_list_top_bottom_padding"
+            android:text="@string/has_referral"
+            android:visibility="gone"
+            android:textColor="@color/alert_urgent_red"
+            android:textSize="@dimen/register_list_desc_size"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/text_view_referral_day"
             style="@style/CustomFontTextViewStyle.ClientList.Light"

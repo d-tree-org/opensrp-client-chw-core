@@ -94,7 +94,7 @@ public class NavigationInteractor implements NavigationContract.Interactor {
             case CoreConstants.TABLE_NAME.TASK:
                 String sqlTask = "select count(*) from task inner join " +
                         "ec_family_member member on member.base_entity_id = task.for COLLATE NOCASE " +
-                        "WHERE task.status =\"READY\" and member.date_removed is null ";
+                        "WHERE task.status in ('READY','IN_PROGRESS') and member.date_removed is null ";
                 return NavigationDao.getQueryCount(sqlTask);
 
             case CoreConstants.TABLE_NAME.ANC_PREGNANCY_OUTCOME:
@@ -199,6 +199,14 @@ public class NavigationInteractor implements NavigationContract.Interactor {
                         "inner join ec_family f on f.base_entity_id = m.relational_id COLLATE NOCASE " +
                         "where m.date_removed is null and p.referral_status = '"+Constants.REFERRAL_STATUS.PENDING+"' ";
                 return NavigationDao.getQueryCount(sqlReferral);
+
+            case CoreConstants.TABLE_NAME.ADOLESCENT:
+                String sqlAdolescent = "select count(*) " +
+                        "from ec_adolescent r " +
+                        "inner join ec_family_member m on r.base_entity_id = m.base_entity_id COLLATE NOCASE " +
+                        "inner join ec_family f on f.base_entity_id = m.relational_id COLLATE NOCASE " +
+                        "where m.date_removed is null and m.is_closed = 0 and r.is_closed = 0 ";
+                return NavigationDao.getQueryCount(sqlAdolescent);
 
             default:
                 return NavigationDao.getTableCount(tableName);
