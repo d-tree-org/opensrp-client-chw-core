@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
-import org.joda.time.Period;
+import org.joda.time.Hours;
 import org.json.JSONObject;
 import org.smartregister.chw.core.R;
 import org.smartregister.chw.core.contract.CoreChildProfileContract;
@@ -273,7 +273,7 @@ public class CoreChildProfilePresenter implements CoreChildProfileContract.Prese
                 getView().setVisitLessTwentyFourView(childVisit.getLastVisitMonthName());
             }
             if (childVisit.getVisitStatus().equalsIgnoreCase(CoreConstants.VisitType.VISIT_THIS_MONTH.name())) {
-                getView().setVisitAboveTwentyFourView();
+                getView().setVisitDone();
             }
             if (childVisit.getVisitStatus().equalsIgnoreCase(CoreConstants.VisitType.NOT_VISIT_THIS_MONTH.name())) {
                 getView().setVisitNotDoneThisMonth();
@@ -282,7 +282,8 @@ public class CoreChildProfilePresenter implements CoreChildProfileContract.Prese
                 getView().setLastVisitRowView(childVisit.getLastVisitDays());
             }
             if (!childVisit.getVisitStatus().equalsIgnoreCase(CoreConstants.VisitType.NOT_VISIT_THIS_MONTH.name()) && childVisit.getLastVisitTime() != 0) {
-                getView().enableEdit(new Period(new DateTime(childVisit.getLastVisitTime()), DateTime.now()).getHours() <= 24);
+                Hours hours = Hours.hoursBetween((new DateTime(childVisit.getLastVisitTime())), DateTime.now());
+                getView().enableEdit(hours.getHours() <= 24);
             }
         }
     }
