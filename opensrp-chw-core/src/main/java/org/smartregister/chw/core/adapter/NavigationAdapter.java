@@ -2,6 +2,7 @@ package org.smartregister.chw.core.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.SyncStateContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.My
 
         holder.getView().setTag(model.getMenuTitle());
 
-
         if (selectedView != null && selectedView.equals(model.getMenuTitle())) {
             holder.tvCount.setTextColor(context.getResources().getColor(R.color.navigation_item_selected));
             holder.tvName.setTextColor(context.getResources().getColor(R.color.navigation_item_selected));
@@ -75,6 +75,12 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.My
             holder.tvName.setTextColor(context.getResources().getColor(R.color.navigation_item_unselected));
             holder.ivIcon.setImageResource(model.getResourceID());
         }
+
+        //Hide the count if the drawer menu is monthly activity
+        if (model.getMenuTitle() == CoreConstants.DrawerMenu.MONTHLY_ACTIVITY ){
+            holder.tvCount.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
