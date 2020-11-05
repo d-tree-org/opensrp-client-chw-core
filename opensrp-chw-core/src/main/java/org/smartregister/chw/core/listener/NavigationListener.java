@@ -66,6 +66,9 @@ public class NavigationListener implements View.OnClickListener {
                 case CoreConstants.DrawerMenu.ADOLESCENT:
                     startRegisterActivity(getActivity(CoreConstants.REGISTERED_ACTIVITIES.ADOLESCENT_REGISTER_ACTIVITY));
                     break;
+                case CoreConstants.DrawerMenu.MONTHLY_ACTIVITY:
+                    startRegisterActivity(getActivity(CoreConstants.REGISTERED_ACTIVITIES.MONTHLY_ACTIVITIES_ACTIVITY));
+                    break;
                 default:
                     Utils.showShortToast(activity.getApplicationContext(), "Unspecified navigation action");
                     break;
