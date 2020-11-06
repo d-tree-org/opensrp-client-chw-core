@@ -77,8 +77,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.My
         }
 
         //Hide the count if the drawer menu is monthly activity
-        if (model.getMenuTitle() == CoreConstants.DrawerMenu.MONTHLY_ACTIVITY ){
-            holder.tvCount.setVisibility(View.GONE);
+        if (CoreConstants.DrawerMenu.MONTHLY_ACTIVITY.equals(model.getMenuTitle())){
+            holder.tvCount.setVisibility(View.INVISIBLE);
         }
 
     }
