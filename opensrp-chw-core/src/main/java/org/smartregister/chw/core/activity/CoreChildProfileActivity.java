@@ -30,6 +30,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.chw.anc.domain.MemberObject;
@@ -472,6 +474,16 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
     }
 
     @Override
+    public void setVisitDone() {
+        textViewNotVisitMonth.setText(getString(R.string.visit_done));
+        textViewUndo.setText(getString(R.string.edit));
+        textViewUndo.setVisibility(View.GONE);
+        tvEdit.setVisibility(View.GONE);
+        imageViewCrossChild.setImageResource(R.drawable.activityrow_visited);
+        openVisitMonthView();
+    }
+
+    @Override
     public void setFamilyHasNothingDue() {
         layoutFamilyHasRow.setVisibility(View.VISIBLE);
         viewFamilyRow.setVisibility(View.VISIBLE);
@@ -539,10 +551,22 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
     @Override
     public void setClientTasks(Set<Task> taskList) {
         handler.postDelayed(() -> {
-            if (taskList.size() > 0) {
+            boolean isReferralFollowDue = false;
+
+            for(Task task : taskList) {
+                int days = Math.abs(Days.daysBetween(task.getAuthoredOn(), DateTime.now()).getDays());
+                if( (days>=1 && task.getPriority() == 1) || days >= 3 ) {
+                    isReferralFollowDue = true;
+                    break;
+                }
+            }
+            if (isReferralFollowDue) {
                 layoutReferralRow.setVisibility(View.VISIBLE);
                 viewReferralRow.setVisibility(View.VISIBLE);
                 layoutReferralRow.setTag(taskList.iterator().next());
+            } else {
+                layoutReferralRow.setVisibility(View.GONE);
+                viewReferralRow.setVisibility(View.GONE);
             }
         }, 100);
     }
