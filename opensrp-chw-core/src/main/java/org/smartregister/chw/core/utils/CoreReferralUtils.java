@@ -354,9 +354,10 @@ public class CoreReferralUtils {
         }
     }
 
-    public static Task getRecentTask(String baseEntityID) {
+    public static Task getTaskForEntity(String baseEntityID, boolean getRecent) {
+        String order = getRecent ? "desc" : "asc";
         try (net.sqlcipher.Cursor cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery("SELECT * FROM TASK" +
-                " WHERE " + FOR + " =? AND status in ('READY', 'IN_PROGRESS') order by authored_on desc", new String[]{baseEntityID})) {
+                " WHERE " + FOR + " =? AND status in ('READY', 'IN_PROGRESS') order by authored_on " + order, new String[]{baseEntityID})) {
             if (cursor.moveToFirst()) {
                 return  CoreChwApplication.getInstance().getTaskRepository().readCursor(cursor);
             }

@@ -46,9 +46,11 @@ public class ChwPncRegisterProvider extends PncRegisterProvider {
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         super.getView(cursor, client, viewHolder);
 
-        // indicate if anc has referral
+        // indicate if pnc has referral
         if(CoreReferralUtils.hasAnyReferralTask(((CommonPersonObjectClient) client).getCaseId())) {
             viewHolder.textViewHasReferral.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.textViewHasReferral.setVisibility(View.GONE);
         }
 
         viewHolder.dueButton.setVisibility(View.GONE);

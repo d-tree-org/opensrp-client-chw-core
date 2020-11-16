@@ -50,6 +50,8 @@ public class ChwAncRegisterProvider extends AncRegisterProvider {
         // indicate if anc has referral
         if(CoreReferralUtils.hasAnyReferralTask(((CommonPersonObjectClient) client).getCaseId())) {
             viewHolder.textViewHasReferral.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.textViewHasReferral.setVisibility(View.GONE);
         }
 
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
