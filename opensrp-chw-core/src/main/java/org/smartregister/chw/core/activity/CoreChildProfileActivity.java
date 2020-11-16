@@ -474,6 +474,16 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
     }
 
     @Override
+    public void setVisitDone() {
+        textViewNotVisitMonth.setText(getString(R.string.visit_done));
+        textViewUndo.setText(getString(R.string.edit));
+        textViewUndo.setVisibility(View.GONE);
+        tvEdit.setVisibility(View.GONE);
+        imageViewCrossChild.setImageResource(R.drawable.activityrow_visited);
+        openVisitMonthView();
+    }
+
+    @Override
     public void setFamilyHasNothingDue() {
         layoutFamilyHasRow.setVisibility(View.VISIBLE);
         viewFamilyRow.setVisibility(View.VISIBLE);

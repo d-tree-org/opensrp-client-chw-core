@@ -69,6 +69,8 @@ public interface CoreChildProfileContract {
 
         void setVisitAboveTwentyFourView();
 
+        void setVisitDone();
+
         void setFamilyHasNothingDue();
 
         void setFamilyHasServiceDue();
