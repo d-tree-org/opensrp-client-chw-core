@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -98,7 +98,7 @@ def githubProperties = new Properties()
 githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
 
 def getVersionName = { ->
-    return "1.1.39-DTREE-25-SNAPSHOT" // Library version
+    return "1.1.39-DTREE-26-SNAPSHOT" // Library version
 }
 
 def getArtificatId = { ->
