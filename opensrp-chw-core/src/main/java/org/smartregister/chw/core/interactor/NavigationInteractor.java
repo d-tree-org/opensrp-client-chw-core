@@ -205,7 +205,10 @@ public class NavigationInteractor implements NavigationContract.Interactor {
                         "from ec_adolescent r " +
                         "inner join ec_family_member m on r.base_entity_id = m.base_entity_id COLLATE NOCASE " +
                         "inner join ec_family f on f.base_entity_id = m.relational_id COLLATE NOCASE " +
-                        "where m.date_removed is null and m.is_closed = 0 and r.is_closed = 0 ";
+                        "where m.date_removed is null and m.is_closed = 0 and r.is_closed = 0 " +
+                        "and (r.base_entity_id not in (select e.base_entity_id from ec_anc_register e " +
+                        "where e.base_entity_id not in (select p.base_entity_id from ec_pregnancy_outcome p " +
+                        "where p.is_closed is 1)))";
                 return NavigationDao.getQueryCount(sqlAdolescent);
 
             default:
