@@ -78,7 +78,7 @@ public abstract class DefaultChildMedicalHistoryActivityFlv implements CoreChild
 
         evaluateLastVisitDate();
         evaluateImmunizations();
-        evaluateVaccineCard();
+        //evaluateVaccineCard();
         evaluateGrowthAndNutrition();
         evaluateECD();
         evaluateLLITN();
