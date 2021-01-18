@@ -3,6 +3,5 @@
     android:padding="40dp"
     android:shape="rectangle">
     <corners android:radius="5dp" />
-    <solid android:color="@color/visit_status_over_due" /> <!-- the button color -->
-
+    <solid android:color="@color/afyatek_primary" />
 </shape>
