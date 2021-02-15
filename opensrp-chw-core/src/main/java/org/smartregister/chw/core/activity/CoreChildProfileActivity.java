@@ -358,17 +358,8 @@ public class CoreChildProfileActivity extends BaseProfileActivity implements Cor
 
     @Override
     public void setGender(String gender) {
-        textViewGender.setText(getGenderTranslated(gender));
+        textViewGender.setText(org.smartregister.chw.core.utils.Utils.getGenderTranslated(getContext(), gender));
         updateTopBar(gender);
-    }
-
-    private String getGenderTranslated(String gender) {
-        if (gender.equalsIgnoreCase(Gender.MALE.toString())) {
-            return getResources().getString(R.string.male);
-        } else if (gender.equalsIgnoreCase(Gender.FEMALE.toString())) {
-            return getResources().getString(R.string.female);
-        }
-        return "";
     }
 
     @Override
