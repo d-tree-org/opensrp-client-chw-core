@@ -4,6 +4,7 @@ package org.smartregister.chw.core.model;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.smartregister.chw.core.application.CoreChwApplication;
 import org.smartregister.chw.core.contract.FamilyRemoveMemberContract;
 import org.smartregister.chw.core.utils.CoreConstants;
 import org.smartregister.chw.core.utils.CoreJsonFormUtils;
@@ -64,7 +65,7 @@ public abstract class CoreFamilyRemoveMemberModel extends CoreFamilyProfileMembe
                             Utils.getValue(client.getColumnmaps(), DBConstants.KEY.MIDDLE_NAME, true),
                             Utils.getValue(client.getColumnmaps(), DBConstants.KEY.LAST_NAME, true),
                             dobString,
-                            Utils.getValue(client.getColumnmaps(), DBConstants.KEY.GENDER, true)
+                            org.smartregister.chw.core.utils.Utils.getGenderTranslated(CoreChwApplication.getInstance().getApplicationContext(), Utils.getValue(client.getColumnmaps(), DBConstants.KEY.GENDER, true))
                     );
 
                     jsonObject.put("text", details);
