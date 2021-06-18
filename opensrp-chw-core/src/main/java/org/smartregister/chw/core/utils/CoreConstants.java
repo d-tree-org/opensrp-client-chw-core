@@ -665,6 +665,12 @@ public class CoreConstants {
             public static final String DATE_MOVED = "date_moved";
         }
 
+        public static class REMOVE_FAMILY_FORM {
+            public static final String FAMILY_CLOSURE_REASON = "closure_reason_fam";
+            public static final String OTHER_CLOSURE_REASON = "closure_reason_other_fam";
+            public static final String FAMILY_RELOCATION_REASON = "closure_reason_relocation_fam";
+        }
+
         public static class CHANGE_CARE_GIVER {
             public static class PHONE_NUMBER {
                 public static final String CODE = "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
