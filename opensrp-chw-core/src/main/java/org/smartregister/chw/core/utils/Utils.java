@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -41,6 +43,7 @@ import org.joda.time.Period;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.opensrp.api.constants.Gender;
 import org.smartregister.chw.anc.domain.MemberObject;
 import org.smartregister.chw.core.R;
 import org.smartregister.chw.core.application.CoreChwApplication;
@@ -59,6 +62,7 @@ import org.smartregister.domain.db.EventClient;
 import org.smartregister.family.util.DBConstants;
 import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.util.JsonFormUtils;
+import org.smartregister.util.LangUtils;
 import org.smartregister.util.PermissionUtils;
 
 import java.text.MessageFormat;
@@ -681,5 +685,23 @@ public abstract class Utils extends org.smartregister.family.util.Utils {
     public static String getFamilyDueFilter() {
         return "and ec_family.base_entity_id in ( select ec_family_member.relational_id from schedule_service inner join ec_family_member on ec_family_member.base_entity_id = schedule_service.base_entity_id " +
                 " where strftime('%Y-%m-%d') BETWEEN schedule_service.due_date and schedule_service.expiry_date and ifnull(schedule_service.not_done_date,'') = '' and ifnull(schedule_service.completion_date,'') = ''  ) ";
+    }
+
+    public static String getGenderTranslated(Context context, String gender) {
+        Resources resources = context.getResources();
+
+        Configuration configuration = resources.getConfiguration();
+        String language = LangUtils.getLanguage(context);
+        Locale locale = new Locale(language);
+
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+
+        if (gender.equalsIgnoreCase(Gender.MALE.toString())) {
+            return resources.getString(R.string.male);
+        } else if (gender.equalsIgnoreCase(Gender.FEMALE.toString())) {
+            return resources.getString(R.string.female);
+        }
+        return "";
     }
 }
